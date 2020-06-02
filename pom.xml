@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <artifactId>simter-reactive-io</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
   <packaging>jar</packaging>
   <name>simter-reactive-io</name>
   <description>Simter reactive IO tools</description>
