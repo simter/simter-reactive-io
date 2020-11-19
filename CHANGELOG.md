@@ -1,5 +1,9 @@
 # simter-reactive-io changelog
 
+## 0.4.0 - 2020-11-19
+
+- Upgrade to simter-parent-2.0.0
+
 ## 0.3.0 - 2020-06-02
 
 - Upgrade to simter-parent-2.0.0-M1
