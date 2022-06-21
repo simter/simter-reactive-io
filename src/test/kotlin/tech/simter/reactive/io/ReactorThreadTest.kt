@@ -1,6 +1,8 @@
 package tech.simter.reactive.io
 
 import org.junit.jupiter.api.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import reactor.core.publisher.Flux
 import reactor.core.scheduler.Schedulers
 
@@ -8,20 +10,23 @@ import reactor.core.scheduler.Schedulers
  * @author RJ
  */
 internal class ReactorThreadTest {
+  private val logger: Logger = LoggerFactory.getLogger(ReactorThreadTest::class.java)
+
   private fun printThreadName(t: String) {
-    println(Thread.currentThread().name + " : " + t)
+    //println(Thread.currentThread().name + " : " + t)
+    logger.info(Thread.currentThread().name + " : " + t)
   }
 
   @Test
   fun main() {
     printThreadName("in main start")
     Flux.just("a", "b")
-      .map { it: String ->
+      .map {
         printThreadName("in map $it")
         it
       }
-      .doOnNext { it: String -> printThreadName("in doOnNext $it") }
-      .subscribe { it: String -> printThreadName("in subscribe $it") }
+      .doOnNext { printThreadName("in doOnNext $it") }
+      .subscribe { printThreadName("in subscribe $it") }
     printThreadName("in main end")
   }
 
@@ -29,13 +34,13 @@ internal class ReactorThreadTest {
   fun publishOn() {
     printThreadName("in main start")
     Flux.just("c", "d")
-      .map { it: String ->
+      .map {
         printThreadName("in map $it")
         it
       }
-      .publishOn(Schedulers.elastic())
-      .doOnNext { it: String -> printThreadName("in doOnNext $it") }
-      .subscribe { it: String -> printThreadName("in subscribe $it") }
+      .publishOn(Schedulers.boundedElastic())
+      .doOnNext { printThreadName("in doOnNext $it") }
+      .subscribe { printThreadName("in subscribe $it") }
     printThreadName("in main end")
   }
 
@@ -43,13 +48,13 @@ internal class ReactorThreadTest {
   fun subscribeOn() {
     printThreadName("in main start")
     Flux.just(1, 2)
-      .map { it: Int ->
+      .map {
         printThreadName("in map $it")
         it
       }
-      .subscribeOn(Schedulers.elastic())
-      .doOnNext { it: Int -> printThreadName("in doOnNext $it") }
-      .subscribe { it: Int -> printThreadName("in subscribe $it") }
+      .subscribeOn(Schedulers.boundedElastic())
+      .doOnNext { printThreadName("in doOnNext $it") }
+      .subscribe { printThreadName("in subscribe $it") }
     printThreadName("in main end")
   }
 }

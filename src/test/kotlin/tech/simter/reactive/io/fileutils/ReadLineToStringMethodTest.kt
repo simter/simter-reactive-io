@@ -1,6 +1,8 @@
 package tech.simter.reactive.io.fileutils
 
 import org.junit.jupiter.api.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import reactor.test.StepVerifier
 import tech.simter.reactive.io.FileUtils
 import tech.simter.reactive.io.FileUtils.readLineToString
@@ -16,28 +18,40 @@ import java.util.*
  * @author RJ
  */
 internal class ReadLineToStringMethodTest {
+  private val logger: Logger = LoggerFactory.getLogger(ReadLineToStringMethodTest::class.java)
+  private fun printLog(txt: String?) {
+    //println(txt)
+    logger.info(txt)
+  }
+
   @Test
   fun calculateMemory() {
     val runtime = Runtime.getRuntime()
     System.gc()
-    println(String.format(
-      "Memory in use before reading: %dMB\n",
-      (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
-    ))
+    printLog(
+      String.format(
+        "Memory in use before reading: %dMB\n",
+        (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
+      )
+    )
     val path = Paths.get("src/main/kotlin/tech/simter/reactive/io/FileUtils.kt")
-    println(path.toString())
+    printLog(path.toString())
     readLineToString(path)
-      .doOnNext { x: String? -> println(x) }
+      .doOnNext { x: String? -> printLog(x) }
       .subscribe()
-    println(String.format(
-      "Memory in use after reading: %dMB\n",
-      (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
-    ))
+    printLog(
+      String.format(
+        "Memory in use after reading: %dMB\n",
+        (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
+      )
+    )
     System.gc()
-    println(String.format(
-      "Memory in use after gc: %dMB\n",
-      (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
-    ))
+    printLog(
+      String.format(
+        "Memory in use after gc: %dMB\n",
+        (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)
+      )
+    )
   }
 
   @Test
