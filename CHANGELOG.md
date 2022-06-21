@@ -1,5 +1,9 @@
 # simter-reactive-io changelog
 
+## 0.5.0 - 2022-06-21
+
+- Upgrade to simter-dependencies-3.0.0 (jdk-17)
+
 ## 0.4.0 - 2020-11-19
 
 - Upgrade to simter-parent-2.0.0
